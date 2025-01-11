@@ -60,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-#ifdef ENCODER_ENABLE
+#if defined(ENCODER_MAP_ENABLE)
 bool encoder_update_user(uint8_t index, bool clockwise) {
   if(IS_LAYER_ON(1)) { // on Raise layer control volume
     if (clockwise){
