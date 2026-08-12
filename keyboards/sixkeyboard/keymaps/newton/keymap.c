@@ -30,28 +30,33 @@ const uint32_t PROGMEM unicode_map[] = {
 `----------+----------+----------'
 */
 
-enum custom_keycodes {
-    EMAIL = SAFE_RANGE,
+enum tap_dance_codes {
+    TD_EMAIL,
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case EMAIL:
-        if (record->event.pressed) {
-            // when keycode EMAIL is pressed
-            SEND_STRING("chris.newton@revium.com.au");
-        } else {
-            // when keycode EMAIL is released
-        }
+void email_tap_dance(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+    case 1:
+        SEND_STRING("chris.newton@revium.com.au");
+        break;
+    case 2:
+        SEND_STRING("sloth_burger@hotmail.com");
+        break;
+    default:
+        SEND_STRING("christopherjnewton@gmail.com");
         break;
     }
-    return true;
+    reset_tap_dance(state);
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_EMAIL] = ACTION_TAP_DANCE_FN(email_tap_dance),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_ortho_2x3(
     LSFT(LCTL(LWIN(KC_4))), LCTL(LALT(KC_ENTER)), LCTL(LALT(LWIN(KC_P))), \
-    LCTL(LWIN(KC_Q)), KC_MUTE, EMAIL \
+    LCTL(LWIN(KC_Q)), LCTL(LALT(LWIN(KC_X))), TD(TD_EMAIL) \
     /*TG(1)*/
   ),
   [1] = LAYOUT_ortho_2x3(
